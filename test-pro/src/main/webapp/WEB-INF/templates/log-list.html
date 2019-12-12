@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Good Thymes Virtual Grocery</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+    <h1>Log list</h1>
+ 
+    <table>
+      <tr>
+        <th>id</th>
+        <th>title</th>
+        <th>model type</th>
+        <th>operate type</th>
+        <th>data id</th>
+        <th>content</th>
+        <th>create time</th>
+        <th>create user</th>
+        <th>create user id</th>
+      </tr>
+      <tr th:each="log : ${logs}">
+        <td th:text="${log.id}">id</td>
+        <td th:text="${log.title}">title</td>
+        <td th:text="${log.moduleType}">module type</td>
+        <td th:text="${log.operateType}">operate type</td>
+        <td th:text="${log.dataId}">data id</td>
+        <td th:text="${log.content}">content</td>
+        <td th:text="${log.createTime}">create time</td>
+        <td th:text="${log.createUser}">create user</td>
+        <td th:text="${log.createUserId}">create user id</td>
+      </tr>
+    </table>
+  </body>
+
+</html>
