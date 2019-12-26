@@ -1,0 +1,114 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- 
+    <context:component-scan base-package="com.dx.test.shiro"/>
+     -->
+	<!-- 凭证匹配器 -->
+	<bean id="credentialsMatcher"
+		class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<!-- 加密算法 -->
+		<property name="hashAlgorithmName" value="md5"></property>
+		<!-- 迭代次数 -->
+		<property name="hashIterations" value="8"></property>
+	</bean>
+	<!-- 配置自定义Realm -->
+	<bean id="myRealm" class="com.dx.test.shiro.MyRealm">
+		<!-- 将凭证匹配器设置到realm中，realm按照凭证匹配器的要求进行散列 -->
+		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
+	</bean>
+	<!-- 一个简单的jdbcRealm 来自：https://blog.csdn.net/qq_31307269/article/details/70237295 -->
+	<bean id="sampleRealm"
+		class="org.apache.shiro.realm.jdbc.JdbcRealm">
+		<!-- dataSource数据源，可以引用spring中配置的数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- authenticationQuery登录认证用户的查询SQL，需要用登录用户名作为条件，查询密码字段。 -->
+		<property name="authenticationQuery"
+			value="select t.password from my_user t where t.username = ?" />
+		<!-- userRolesQuery用户角色查询SQL，需要通过登录用户名去查询。查询角色字段 -->
+		<property name="userRolesQuery"
+			value="select a.rolename from my_user_role t left join my_role a on t.roleid = a.id where t.username = ? " />
+			<!-- permissionsQuery用户的权限资源查询SQL，需要用单一角色查询角色下的权限资源，如果存在多个角色，则是遍历每个角色，分别查询出权限资源并添加到集合中。 -->
+		<property name="permissionsQuery"
+			value="SELECT B.PERMISSION FROM MY_ROLE T LEFT JOIN MY_ROLE_PERMISSION A ON T.ID = A.ROLE_ID LEFT JOIN MY_PERMISSION B ON A.PERMISSION = B.ID WHERE T.ROLENAME = ? " />
+		<!-- permissionsLookupEnabled默认false。False时不会使用permissionsQuery的SQL去查询权限资源。设置为true才会去执行。 -->
+		<property name="permissionsLookupEnabled" value="true" />
+		<!-- saltStyle密码是否加盐，默认是NO_SALT不加盐。加盐有三种选择CRYPT,COLUMN,EXTERNAL。这里按照不加盐处理。 -->
+		<property name="saltStyle" value="NO_SALT" />
+		<!-- credentialsMatcher密码匹配规则 -->
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+	</bean>
+
+	<!-- securityManager安全管理器 -->
+	<bean id="securityManager"
+		class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="myRealm"></property>
+	</bean>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+	<!-- id属性值要对应 web.xml中shiro的filter对应的bean -->
+	<bean id="shiroFilter"
+		class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager"></property>
+		<!-- loginUrl认证提交地址，如果没有认证将会请求此地址进行认证，请求地址将由formAuthenticationFilter进行表单认证 -->
+		<property name="loginUrl" value="/login"></property>
+		<!-- 认证成功统一跳转到first.action，建议不配置，shiro认证成功会默认跳转到上一个请求路径 -->
+		<!-- <property name="successUrl" value="/first.action"></property> -->
+		<!-- 通过unauthorizedUrl指定没有权限操作时跳转页面，这个位置会拦截不到，下面有给出解决方法 -->
+		<!-- <property name="unauthorizedUrl" value="/refuse.jsp"></property> -->
+
+		<!-- 过滤器定义，从上到下执行，一般将/**放在最下面 -->
+		<property name="filterChainDefinitions">
+			<!-- 
+			过滤器简称        对应的java类
+			anon            org.apache.shiro.web.filter.authc.AnonymousFilter
+			authc           org.apache.shiro.web.filter.authc.FormAuthenticationFilter
+			authcBasic      org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter
+			perms           org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter
+			port            org.apache.shiro.web.filter.authz.PortFilter
+			rest            org.apache.shiro.web.filter.authz.HttpMethodPermissionFilter
+			roles           org.apache.shiro.web.filter.authz.RolesAuthorizationFilter
+			ssl             org.apache.shiro.web.filter.authz.SslFilter
+			user            org.apache.shiro.web.filter.authc.UserFilter
+			logout          org.apache.shiro.web.filter.authc.LogoutFilter
+			————————————————
+			版权声明：本文为CSDN博主「a745233700」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+			原文链接：https://blog.csdn.net/a745233700/article/details/81350191
+			-->
+			<value>
+				# 对静态资源设置匿名访问 
+				/images/** = anon
+				/js/** = anon
+				/styles/** = anon
+				/validatecode.jsp=anon
+				/index=anon
+				
+				# 请求logout.action地址，shiro去清除session 
+				/logout.action = logout
+				
+				# /**=anon 所有的url都可以匿名访问,不能配置在最后一排，不然所有的请求都不会拦截 
+				# /**=authc 所有的url都必须通过认证才可以访问 
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+	<!-- 解决shiro配置的没有权限访问时，unauthorizedUrl不跳转到指定路径的问题 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.apache.shiro.authz.UnauthorizedException">/refuse</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

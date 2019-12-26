@@ -17,11 +17,17 @@ import com.dx.test.model.ArticleModel;
 
 @Controller
 public class FileController {
+	/**
+	 * 测试：走 Jsp 视图引擎，去/WEB-INF/views/下找 index.jsp 视图
+	 * */
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
 	public String upload() {
 		return "file/upload.jsp";
 	}
 
+	/**
+	 * 测试：走 Jsp 视图引擎，去/WEB-INF/views/下找 index.jsp 视图
+	 * */
 	// 参考：https://blog.csdn.net/qq_27607965/article/details/80332467
 	@RequestMapping(value = "/update_with_put_file", method = RequestMethod.PUT)
 	//@ResponseBody
@@ -37,9 +43,12 @@ public class FileController {
 		String content = request.getParameter("content");
 		System.out.println(String.format("%s,%s,%s", id, title, content));
 
-		return "redirect:/index.jsp";
+		return "redirect:/index";
 	}
-
+	
+	/**
+	 * 测试：走 Jsp 视图引擎，去/WEB-INF/views/下找 index.jsp 视图
+	 * */
 	@RequestMapping(value = "/update_with_post_file", method = RequestMethod.POST)
 	public String update_with_post_file(@ModelAttribute(value = "article") ArticleModel article, HttpServletRequest request) throws IOException, ServletException {
 		System.out.println(article);

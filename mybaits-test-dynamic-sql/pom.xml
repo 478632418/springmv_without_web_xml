@@ -1,11 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dx.test</groupId>
-	<artifactId>test-pro</artifactId>
+	<artifactId>mybaits-test-dynamic-sql</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>test-pro Maven Webapp</name>
+	<name>mybaits-test-dynamic-sql Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -18,7 +19,8 @@
 		<org.mybatis.version>3.4.6</org.mybatis.version>
 		<org.mybatis.spring.version>2.0.3</org.mybatis.spring.version>
 		<org.aspectj.version>1.9.4</org.aspectj.version>
-		<jackson.version>2.10.0</jackson.version>
+		<jackson.version>2.10.1</jackson.version>
+		<shiro.version>1.4.2</shiro.version>
 	</properties>
 
 	<dependencies>
@@ -109,7 +111,6 @@
 			<version>${org.mybatis.spring.version}</version>
 		</dependency>
 
-
 		<!--MySql数据库驱动 -->
 		<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
 		<dependency>
@@ -139,7 +140,7 @@
 			<artifactId>jackson-module-parameter-names</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		
+
 		<!--form 设置为enctype="multipart/form-data"，多文件上传，在applicationContext.xml中配置了bean 
 			multipartResolver时，需要依赖该包。 -->
 		<dependency>
@@ -184,28 +185,48 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-cas</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-ehcache</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<repositories>
-		<!-- 代码库 -->
-	   <repository>
-	      <id>maven-ali</id>
-	      <url>http://maven.aliyun.com/nexus/content/groups/public//</url>
-	      <releases>
-	         <enabled>true</enabled>
-	      </releases>
-	      <snapshots>
-	         <enabled>true</enabled>
-	         <updatePolicy>always</updatePolicy>
-	         <checksumPolicy>fail</checksumPolicy>
-	      </snapshots>
-	   </repository>
-	</repositories>
+
 	<build>
-		<finalName>test-pro</finalName>
+		<finalName>mybaits-test-dynamic-sql</finalName>
 	</build>
 </project>

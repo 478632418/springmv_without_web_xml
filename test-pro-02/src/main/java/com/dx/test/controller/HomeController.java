@@ -15,16 +15,24 @@ public class HomeController {
 	@Autowired
 	private LogService logService;
 	
+	/**
+	 * 测试：走 Jsp 视图引擎，去/WEB-INF/views/下找 index.jsp 视图
+	 * */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String def() {
         return "index.jsp";
     }
-
+	/**
+	 * 测试：走 Jsp 视图引擎，去/WEB-INF/views/下找 index.jsp 视图
+	 * */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
         return "index.jsp";
     }
 	
+	/**
+	 * 测试：走 Thymeleaf 视图引擎
+	 * */
 	@RequestMapping(value="/log-list",method = RequestMethod.GET)
 	public ModelAndView logList(Map<String, Object> map) {
 		ModelAndView mView=new ModelAndView();
