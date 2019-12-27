@@ -35,7 +35,17 @@ public class IndexController {
 		maView.setViewName("login.jsp");
 		return maView;
 	}
-
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public ModelAndView logout() {
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		
+		ModelAndView maView = new ModelAndView();
+		maView.setViewName("login.jsp");
+		return maView;
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String doLogin(String username, String password,Map<String,Object> map) {
 		

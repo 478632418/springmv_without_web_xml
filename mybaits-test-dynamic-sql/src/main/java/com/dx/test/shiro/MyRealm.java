@@ -49,7 +49,7 @@ public class MyRealm extends AuthorizingRealm {
 
 	/**
 	 * 认证使用（就是登录）<br>
-	 * 所谓的认真就是 和配置文件shiro.ini、数据库、内存中获取到用户的认证信息， 与用户输入的信息进行验证对比：<br>
+	 * 所谓的认证就是 和配置文件shiro.ini、数据库、内存中获取到用户的认证信息， 与用户输入的信息进行验证对比：<br>
 	 * 如果验证通过，就返回验证结果；如果验证失败，就返回异常信息。<br>
 	 * <b>验证对比过程一般如下：</b><br>
 	 * 1)一般情况下对比账户是否存在; <br>
@@ -99,9 +99,16 @@ public class MyRealm extends AuthorizingRealm {
 		// 从数据库中取出盐
 		ByteSource byteSource = ByteSource.Util.bytes(sysUser.getSalt());
 
+		SysUser simpleSysUser=new SysUser();
+		simpleSysUser.setUserName(sysUser.getUsername());
+		simpleSysUser.setEmail(sysUser.getEmail());
+		simpleSysUser.setPhone(sysUser.getPhone());
+		simpleSysUser.setNickName(sysUser.getNickName());
+		simpleSysUser.setSignature(sysUser.getSignature());
+		
 		// 该信息会提交给SecurityManager，在SecurityManager内部会进行验证：
 		// 用户输入的password+salt+md5+hashIterations 是否等于 db password? 等于则通过认证，否则不通过认证。
-		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(username, password.toCharArray(),
+		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(simpleSysUser, password.toCharArray(),
 				byteSource, this.getName());
 		return authenticationInfo;
 	}
@@ -112,12 +119,16 @@ public class MyRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		System.out.println("‘MyRealm’执行授权操作：");
-		String username = principals.getPrimaryPrincipal().toString();
+		SysUser simpleSysUser = (SysUser) principals.getPrimaryPrincipal();
+		if (simpleSysUser == null) {
+			throw new UnknownAccountException("用户名不存在");
+		}
+		String username=simpleSysUser.getUsername();
 		SysUser sysUser = this.sysUserMapper.getByUsername(username);
 		if (sysUser == null) {
 			throw new UnknownAccountException("用户名不存在");
 		}
-
+		
 		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 
 		// 1）设置授权的‘角色’
