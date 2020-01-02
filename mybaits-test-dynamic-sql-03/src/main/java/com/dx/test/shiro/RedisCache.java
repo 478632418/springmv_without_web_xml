@@ -11,29 +11,28 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class RedisCache<K, V> implements Cache<K, V> {
     @Autowired
     private RedisTemplate redisTemplate;
     private Logger logger;
     private String keyPrefix;
-
-    public String getKeyPrefix() {
-        return this.keyPrefix;
-    }
+    private Long timeout=30L;
 
     public void setKeyPrefix(String keyPrefix) {
         this.keyPrefix = keyPrefix;
     }
 
-    public RedisCache(RedisTemplate redisTemplate) {
+    public RedisCache(RedisTemplate redisTemplate,Long timeout) {
         this.logger = LoggerFactory.getLogger(this.getClass());
         this.keyPrefix = "shiro_redis_session:";
         this.redisTemplate = redisTemplate;
+        this.timeout=timeout;
     }
 
-    public RedisCache(RedisTemplate redisTemplate, String prefix) {
-        this(redisTemplate);
+    public RedisCache(RedisTemplate redisTemplate,Long timeout, String prefix) {
+        this(redisTemplate,timeout);
         this.keyPrefix = prefix;
     }
 
@@ -76,6 +75,7 @@ public class RedisCache<K, V> implements Cache<K, V> {
         byte[] bytesValue = SerializeUtils.serialize((Serializable) value);
 
         redisConnection.set(bytesKey, bytesValue);
+        redisConnection.expire(bytesKey,timeout*60*1000);
 
         byte[] bytes = redisConnection.get(getByteKey(key));
         Object object = SerializeUtils.deserialize(bytes);

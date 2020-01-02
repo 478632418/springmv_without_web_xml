@@ -15,6 +15,7 @@ public class RedisCacheManager implements CacheManager {
     private static final Logger logger = LoggerFactory.getLogger(RedisCacheManager.class);
     private final ConcurrentMap<String, Cache> caches = new ConcurrentHashMap();
     private String keyPrefix = "shiro_redis_cache:";
+    private Long timeout=30L;
     private RedisTemplate<Serializable, Object> redisTemplate;
 
     public String getKeyPrefix() {
@@ -23,6 +24,14 @@ public class RedisCacheManager implements CacheManager {
 
     public void setKeyPrefix(String keyPrefix) {
         this.keyPrefix = keyPrefix;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
     }
 
     public RedisTemplate<Serializable, Object> getRedisTemplate() {
@@ -38,7 +47,7 @@ public class RedisCacheManager implements CacheManager {
         logger.debug("获取名称为: " + name + " 的RedisCache实例");
         Cache c = (Cache)this.caches.get(name);
         if (c == null) {
-            c = new RedisCache(this.redisTemplate, this.keyPrefix);
+            c = new RedisCache(this.redisTemplate,this.timeout, this.keyPrefix);
             this.caches.put(name, c);
         }
 

@@ -50,7 +50,7 @@ public class RedisSessionDao extends AbstractSessionDAO {
         if (session != null && session.getId() != null) {
             String key = this.getKey(session.getId().toString());
             session.setTimeout(this.sessionTimeout * 60 * 1000);
-            redisTemplate.opsForValue().set(key, session, this.sessionTimeout, TimeUnit.MINUTES);
+            redisTemplate.opsForValue().set(key, session, this.sessionTimeout*60*1000, TimeUnit.SECONDS);
         } else {
             logger.error("session or session id is null");
         }
