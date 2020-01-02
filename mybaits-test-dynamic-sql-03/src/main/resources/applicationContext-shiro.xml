@@ -9,8 +9,6 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
-	<context:component-scan base-package="com.dx.test.shiro"></context:component-scan>
-
 	<!-- 凭证匹配器 -->
 	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
 		<!-- 加密算法 -->
@@ -94,9 +92,6 @@
 		<property name="cacheManager" ref="cacheManager"></property>
 		<property name="sessionManager" ref="sessionManager"></property>
  	</bean>
-
-	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->  
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
 	<bean id="kickout" class="com.dx.test.shiro.KickoutSessionFilter">
 		<constructor-arg name="sessionManager" ref="sessionManager"></constructor-arg>

@@ -31,6 +31,10 @@
     <!-- 开启aop，对类代理 -->
     <aop:config proxy-target-class="true"></aop:config>
 
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
     <!-- 配置启用Shiro的注解功能 -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           depends-on="lifecycleBeanPostProcessor">

@@ -19,7 +19,7 @@ import java.util.Map;
  * 1）parent ApplicationContext:ContextLoaderListener初始化的；<br>
  * 2）child ApplicationContext:DispatcherServlet初始化的。<br>
  */
-@Component("StartupListener")
+@Component("startupListener")
 public class StartupListener implements ApplicationListener<ContextRefreshedEvent> {
     protected Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired

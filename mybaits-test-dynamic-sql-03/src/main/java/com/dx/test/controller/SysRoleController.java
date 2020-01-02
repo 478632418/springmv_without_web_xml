@@ -25,7 +25,7 @@ public class SysRoleController {
 	private ShiroService shiroService;
 
 	/**
-	 * 模拟修改了用户角色信息，需要清空相关用户的授权缓存
+	 * 模拟修改了用户角色信息，需要清空相关用户的授权缓存（下次用户调用授权时，会重新执行MyShiro#doGetAuthorizationInfo(...)方法）
 	 * */
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public String updateRole(SysRole sysRole, Map<String, Object> map) {
@@ -37,7 +37,7 @@ public class SysRoleController {
 		// 2）删除了角色；
 		// 3）修改了用户的角色信息。
 
-		myRealm.clearAllCache();
+		this.myRealm.clearAllCache();
 
 		enu = ResultEnum.Success;
 		baseResult = new BaseResult(enu.getCode(), enu.getMessage(), enu.getDesc());
@@ -47,7 +47,9 @@ public class SysRoleController {
 	}
 
 	/**
-	 * 模拟修改了用户的资源信息（增删改），需要同步到shiroFilter的filterChainDefinitions属性。
+	 * 模拟修改了用户的资源信息（增删改），
+	 * 1)需要同步到shiroFilter的filterChainDefinitions属性。
+	 * 2)清空在线用户的授权缓存信息。（下次用户调用授权时，会重新执行MyShiro#doGetAuthorizationInfo(...)方法）
 	 * */
 	@RequestMapping(value="/updatePermission",method=RequestMethod.GET)
 	public String updatePermission(SysPermission sysPermission, Map<String,String> map, HttpServletRequest request){
@@ -60,6 +62,7 @@ public class SysRoleController {
 		// 3）修改了用户的资源信息。
 
 		this.shiroService.reloadPermission(request.getServletContext());
+		this.myRealm.clearAllCache();
 
 		enu = ResultEnum.Success;
 		baseResult = new BaseResult(enu.getCode(), enu.getMessage(), enu.getDesc());
