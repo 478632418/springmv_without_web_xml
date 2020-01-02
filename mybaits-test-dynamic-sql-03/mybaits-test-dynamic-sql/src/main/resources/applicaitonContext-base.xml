@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 扫描Service、Dao里面的注解，这里没有定义service -->
+    <context:component-scan base-package="com.dx.test.dao"/>
+    <!-- 扫描@Controller注解类 -->
+    <context:component-scan base-package="com.dx.test.controller"/>
+    <!-- 加载Listener component -->
+    <context:component-scan base-package="com.dx.test.listener"/>
+    <!-- 扫描shrio相关类（包含了@Service ShiroService组件） -->
+    <context:component-scan base-package="com.dx.test.shiro"/>
+
+    <!-- 文件上传注意id -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 配置默认编码 -->
+        <property name="defaultEncoding" value="utf-8"></property>
+        <!-- 配置文件上传的大小 -->
+        <property name="maxUploadSize" value="1048576"></property>
+    </bean>
+
+</beans>

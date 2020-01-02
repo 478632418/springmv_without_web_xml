@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="mybaits-test-dynamic-sql:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>mybaits-test-dynamic-sql</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="mybaits-test-dynamic-sql.war">
+      <element id="artifact" artifact-name="mybaits-test-dynamic-sql:war exploded" />
+    </root>
+  </artifact>
+</component>

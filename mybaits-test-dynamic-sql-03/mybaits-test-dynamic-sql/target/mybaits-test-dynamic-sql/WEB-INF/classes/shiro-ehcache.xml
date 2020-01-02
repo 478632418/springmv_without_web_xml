@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+	<!-- 数据缓存地址，如，F:/develop/ehcache -->
+    <diskStore path="java.io.tmpdir/shiro-spring-sample"/>
+    <!-- 
+    name="authorizationCache" //缓存名称
+    maxEntriesLocalHeap="2000" //缓存最大条目数
+    eternal="false" //对象是否永久有效，true则timeout失效
+    timeToIdleSeconds="3600" //对象在失效前的闲置时间（单位：s），仅eternal=false时有效；默认为0，即可闲置时间无穷大。
+    timeToLiveSeconds="0" //缓存数据的生成时间（单位：s），介于创建时间和失效时间之间；仅eternal=false有效；默认为0，即对象存活时间无穷大。
+    overflowToDisk="false" //内存中对象数量达到maxElementInMemory时，是否将对象写到磁盘
+	diskSpoolBufferSizeMB：设置diskStore磁盘缓存的缓存区大小，默认30MB。每个Cache都应该有自己的一个缓存区。
+	maxElementOnDisk：磁盘最大缓存个数。
+	diskPersistent：是否缓存虚拟机重启期数据，默认false。
+	diskExpiryThreadIntervalSeconds: 磁盘失效线程运行时间间隔，默认120s。
+	memoryStoreEvictionPolicy:达到maxElementInMemory时，Ehcache将会根据此策略去清理内存，默认策略是LRU（最近最少使用），可设为FIFO（先进先出）或LFU（较少使用）。
+	clearOnFlush: 内存数量最大时是否清除。
+ 	-->
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            />
+    
+    <cache name="shiro-activeSessionCache"
+           maxElementsInMemory="10000"
+           eternal="true"
+           overflowToDisk="true"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="600"/>
+
+    <cache name="org.apache.shiro.realm.SimpleAccountRealm.authorization"
+           maxElementsInMemory="100"
+           eternal="false"
+           timeToLiveSeconds="600"
+           overflowToDisk="false"/>
+
+    <cache name="authorizationCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <cache name="authenticationCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+</ehcache>
