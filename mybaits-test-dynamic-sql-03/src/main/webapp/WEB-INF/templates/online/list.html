@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Online user page</title>
+    <style>
+        td{
+            border:solid #add9c0;
+            border-width:0px 1px 1px 0px;
+        }
+        table{
+            border:solid #add9c0;
+            border-width:1px 0px 0px 1px;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<h3>在线用户列表</h3>
+<table>
+    <thead>
+    <tr>
+        <td>会话id</td>
+        <td>用户名</td>
+        <td>主机地址</td>
+        <td>最后访问时间</td>
+        <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <shiro:hasPermission name="online:list">
+    <tr th:each="m : ${list}"><!-- 其中m是个临时变量，像for(User u : userList)那样中的u-->
+        <td th:text="${m.sessionId}"/>
+        <td th:text="${m.username}"/>
+        <td th:text="${m.host}"/>
+        <td th:text="${m.lastAccess}"/>
+        <td>
+            <shiro:hasPermission name="online:remove">
+                <a href="/online/delete?id=${m.sessionId}">剔除</a>
+            </shiro:hasPermission>
+        </td>
+    </tr>
+    </shiro:hasPermission>
+    </tbody>
+</table>
+<shiro:lacksPermission name="online:list">
+<p>
+    Sorry, you are not allowed to access online user information.
+</p>
+</shiro:lacksPermission>
+<shiro:lacksPermission name="online:remove">
+<p>
+    Sorry, you are not allowed to remove online user.
+</p>
+</shiro:lacksPermission>
+</body>
+</html>

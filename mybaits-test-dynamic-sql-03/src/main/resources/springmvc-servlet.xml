@@ -1,0 +1,104 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd ">
+
+    <!-- 开启controller注解支持 -->
+    <!-- 注意事项请参考：http://jinnianshilongnian.iteye.com/blog/1762632 -->
+    <context:component-scan base-package="com.dx.test.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+    <!--使用mvc:annotation-driven代替上边注解映射器和注解适配器 配置 如果使用mvc:annotation-driven就不用配置上面的
+        RequestMappingHandlerMapping和RequestMappingHandlerAdapter-->
+    <!-- 使用注解驱动：自动配置处理器映射器与处理器适配器 -->
+    <!-- <mvc:annotation-driven /> -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!-- 开启aop，对类代理 -->
+    <aop:config proxy-target-class="true"></aop:config>
+
+    <!-- 配置启用Shiro的注解功能 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true"></property>
+    </bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!-- 单独使用jsp视图解析器时，可以取消掉注释，同时注释掉：下边的‘配置多个视图解析’配置-->
+    <!--
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    -->
+
+    <!-- 使用thymeleaf解析  -->
+    <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/templates/"/>
+        <!--<property name="suffix" value=".html" />-->
+        <property name="templateMode" value="HTML"/>
+        <property name="characterEncoding" value="UTF-8"/>
+        <property name="cacheable" value="false"/>
+    </bean>
+
+    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+        <property name="additionalDialects">
+            <set>
+                <bean class="at.pollux.thymeleaf.shiro.dialect.ShiroDialect"/>
+            </set>
+        </property>
+    </bean>
+
+    <!--单独使用thymeleaf视图引擎时，可以取消掉注释，同时注释掉：下边的‘配置多个视图解析’配置 -->
+    <!--
+    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">  
+      <property name="templateEngine" ref="templateEngine" />  
+      <property name="characterEncoding" value="UTF-8"/>  
+    </bean>
+    -->
+
+    <!--  配置多个视图解析 参考：https://blog.csdn.net/qq_19408473/article/details/71214972-->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="viewResolvers">
+            <!--
+            此时，
+            返回视图：return "abc.jsp" ，将使用jsp视图解析器，jsp的视图模板文件在/WEB-INF/views/下；
+            返回视图：return "abc.html"，将使用 thymeleaf视图解析器，thymeleaf的视图模板文件在/WEB-INF/templates/下。
+            -->
+            <list>
+                <!--used thymeleaf  -->
+                <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+                    <property name="characterEncoding" value="UTF-8"/>
+                    <property name="templateEngine" ref="templateEngine"/>
+                    <property name="viewNames" value="*.html"/>
+                    <property name="order" value="2"/>
+                </bean>
+                <!-- used jsp -->
+                <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="prefix" value="/WEB-INF/views/"/>
+                    <!--<property name="suffix" value=".jsp"/>-->
+                    <property name="viewNames" value="*.jsp"/>
+                    <property name="order" value="1"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+</beans>
