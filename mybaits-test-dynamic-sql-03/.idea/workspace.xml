@@ -7,12 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="138fb0af-12e0-4271-a166-0f08b17c2a42" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/dx/test/shiro/RedisCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dx/test/shiro/RedisCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/dx/test/shiro/RedisCacheManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dx/test/shiro/RedisCacheManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/dx/test/shiro/RedisSessionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/dx/test/shiro/RedisSessionDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/applicationContext-shiro.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/applicationContext-shiro.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../test-pro/.classpath" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../test-pro/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../test-pro/.project" beforeDir="false" />
@@ -303,7 +298,7 @@
       <updated>1577635860334</updated>
       <workItem from="1577635863119" duration="39857000" />
       <workItem from="1577869203930" duration="2740000" />
-      <workItem from="1577948460709" duration="2073000" />
+      <workItem from="1577948460709" duration="2261000" />
     </task>
     <servers />
   </component>
