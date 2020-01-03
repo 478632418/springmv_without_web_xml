@@ -19,8 +19,7 @@
     <!-- 注意事项请参考：http://jinnianshilongnian.iteye.com/blog/1762632 -->
     <context:component-scan base-package="com.dx.test.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-        <context:include-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
     </context:component-scan>
     <!--使用mvc:annotation-driven代替上边注解映射器和注解适配器 配置 如果使用mvc:annotation-driven就不用配置上面的
         RequestMappingHandlerMapping和RequestMappingHandlerAdapter-->
@@ -30,19 +29,6 @@
 
     <!-- 开启aop，对类代理 -->
     <aop:config proxy-target-class="true"></aop:config>
-
-
-    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
-
-    <!-- 配置启用Shiro的注解功能 -->
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-          depends-on="lifecycleBeanPostProcessor">
-        <property name="proxyTargetClass" value="true"></property>
-    </bean>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
 
     <!-- 单独使用jsp视图解析器时，可以取消掉注释，同时注释掉：下边的‘配置多个视图解析’配置-->
     <!--

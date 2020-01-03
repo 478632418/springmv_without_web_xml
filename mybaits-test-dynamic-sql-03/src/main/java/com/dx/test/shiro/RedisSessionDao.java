@@ -94,8 +94,8 @@ public class RedisSessionDao extends AbstractSessionDAO {
         Serializable sessionId = this.generateSessionId(session);
         this.assignSessionId(session, sessionId);
         logger.debug("创建seesion,id=[{}]", session.getId() != null ? session.getId().toString() : "null");
-        // 不关心游客的情况下，这里就不需要记录sessionId
-        // this.saveSession(session);
+        // 当有游客进入或者remeberme都会调用
+        this.saveSession(session);
 
         return sessionId;
     }

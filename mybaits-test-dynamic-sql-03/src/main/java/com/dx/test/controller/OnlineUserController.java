@@ -1,7 +1,6 @@
 package com.dx.test.controller;
 
 import com.dx.test.model.vo.UserOnlineVo;
-import com.dx.test.shiro.RedisSessionDao;
 import com.dx.test.shiro.ShiroService;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +15,6 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/online")
 public class OnlineUserController {
-    @Autowired
-    private RedisSessionDao redisSessionDao;
     @Autowired
     private ShiroService shiroService;
 
