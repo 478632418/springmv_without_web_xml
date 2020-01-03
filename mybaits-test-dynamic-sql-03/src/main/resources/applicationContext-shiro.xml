@@ -115,7 +115,7 @@
         <constructor-arg name="sessionManager" ref="sessionManager"></constructor-arg>
         <constructor-arg name="cacheName" value="shiro_redis_kickout_cache"></constructor-arg>
         <constructor-arg name="cacheManager" ref="cacheManager"></constructor-arg>
-        <constructor-arg name="kickoutAfter" value="true"></constructor-arg>
+        <constructor-arg name="kickoutAfter" value="false"></constructor-arg>
         <constructor-arg name="kickoutUrl" value="/login"></constructor-arg>
         <constructor-arg name="maxSession" value="2"></constructor-arg>
     </bean>
