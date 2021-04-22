@@ -15,7 +15,7 @@
 		<org.springframework.version>5.2.0.RELEASE</org.springframework.version>
 		<com.alibaba.version>1.1.21</com.alibaba.version>
 		<mysql.version>8.0.11</mysql.version>
-		<org.mybatis.version>3.4.6</org.mybatis.version>
+		<org.mybatis.version>3.5.6</org.mybatis.version>
 		<org.mybatis.spring.version>2.0.3</org.mybatis.spring.version>
 		<org.aspectj.version>1.9.4</org.aspectj.version>
 		<jackson.version>2.10.0</jackson.version>
