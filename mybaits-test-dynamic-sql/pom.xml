@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<org.springframework.version>5.2.0.RELEASE</org.springframework.version>
+		<org.springframework.version>5.2.20.RELEASE</org.springframework.version>
 		<com.alibaba.version>1.1.21</com.alibaba.version>
 		<mysql.version>8.0.11</mysql.version>
 		<org.mybatis.version>3.4.6</org.mybatis.version>
